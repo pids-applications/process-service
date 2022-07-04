@@ -24,6 +24,9 @@ pipeline {
         IMAGE_TAG = "${BUILD_ID}"
         CONTAINER_IMAGE =  "${IMAGE_REPO}/${IMAGE_TAG}"
 
+        NAMESPACE = "default"
+        SQS_SA_VALUE = "sqs-processing-sa"
+        SQS_ROLE_VALUE = "arn:aws:iam::808059214513:role/sqs-processing-sa"
         AWS_REGION = "ap-southeast-1"
         QUEUE_URL = "https://sqs.ap-southeast-1.amazonaws.com/808059214513/pids-prod-sqs"
         PSQL_USER = "dbadmin"
@@ -31,7 +34,6 @@ pipeline {
         PSQL_HOST = "pids-db.csqxvg6p6diw.ap-southeast-1.rds.amazonaws.com"
         PSQL_PORT = "5432"
         PSQL_DATABASE = "pidsuser"
-        SQS_SA_VALUE = "sqs-processing-sa"
     }
 
     stages {
