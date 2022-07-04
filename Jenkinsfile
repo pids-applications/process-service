@@ -18,7 +18,7 @@ pipeline {
         // Service variables
         SERVICE_NAME = "process-service"
         APP_REPO = "git@github.com:${APPS_ORG}/${SERVICE_NAME}.git"
-        DEVOPS_REPO = "git@github.com:${DEVOPS_ORG}/devops-${SERVICE_NAME}.git"
+        DEVOPS_REPO = "git@github.com:${DEVOPS_ORG}/${SERVICE_NAME}.git"
         ECR_URI = "${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
         IMAGE_REPO = "${ECR_URI}/${SERVICE_NAME}"
         IMAGE_TAG = "${BUILD_ID}"
