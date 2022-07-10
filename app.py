@@ -1,6 +1,9 @@
 import os, logging, json, time, boto3, psycopg2
 from botocore.exceptions import ClientError
+from dotenv import load_dotenv
 from psycopg2 import Error
+
+load_dotenv("/config/settings.ini")
 
 AWS_REGION = os.getenv('AWS_REGION')
 PSQL_USER = os.getenv('PSQL_USER')
@@ -91,6 +94,15 @@ def insert_data(data):
 if __name__ == '__main__':
     # CONSTANTS
     QUEUE_URL = os.getenv('QUEUE_URL')
+
+    logger.info(f'test AWS_REGION: {AWS_REGION}')
+    logger.info(f'test QUEUE_URL: {QUEUE_URL}')
+    logger.info(f'test PSQL_USER: {PSQL_USER}')
+    logger.info(f'test PSQL_PASSWORD: {PSQL_PASSWORD}')
+    logger.info(f'test PSQL_HOST: {PSQL_HOST}')
+    logger.info(f'test PSQL_PORT: {PSQL_PORT}')
+    logger.info(f'test PSQL_DATABASE: {PSQL_DATABASE}')
+
     create_table()
     while True:
         if (get_no_messages(QUEUE_URL) > 5):

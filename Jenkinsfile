@@ -23,17 +23,6 @@ pipeline {
         IMAGE_REPO = "${ECR_URI}/${SERVICE_NAME}"
         IMAGE_TAG = "${BUILD_ID}"
         CONTAINER_IMAGE =  "${IMAGE_REPO}:${IMAGE_TAG}"
-
-        NAMESPACE = "default"
-        SQS_SA = "sqs-processing-sa"
-        SQS_ROLE = "arn:aws:iam::808059214513:role/sqs-processing-sa"
-        AWS_REGION = "ap-southeast-1"
-        QUEUE_URL = "https://sqs.ap-southeast-1.amazonaws.com/808059214513/pids-prod-sqs"
-        PSQL_USER = "dbadmin"
-        PSQL_PASSWORD = "dbpassword11"
-        PSQL_HOST = "pids-db.csqxvg6p6diw.ap-southeast-1.rds.amazonaws.com"
-        PSQL_PORT = "5432"
-        PSQL_DATABASE = "pidsuser"
     }
 
     stages {
@@ -72,9 +61,16 @@ pipeline {
         stage('Update and Push Devops Repo') {
             steps {
                 sh '''
-                    cd ${WORKSPACE}/devops/
-                    envsubst < ./deployment.tpl.yaml > ./deployment.yaml
-                    cat ${WORKSPACE}/devops/deployment.yaml
+                    if [ $BRANCH_NAME=="main" ]
+                    then
+                    TARGET="prod"
+                    else
+                    TARGET="dev"
+                    fi
+                    echo $TARGET
+                    cd $WORKSPACE/devops/
+                    sed -i "/^[[:space:]]*tag:/ s/:.*/: ${IMAGE_TAG}/" values-$TARGET.yaml
+                    cat $WORKSPACE/devops/values-$TARGET.yaml
                 '''
                 sshagent (credentials: ['github-key']) {
                     sh '''
