@@ -69,7 +69,7 @@ pipeline {
                     fi
                     echo $TARGET
                     cd $WORKSPACE/devops/
-                    sed -i "/^[[:space:]]*tag:/ s/:.*/: ${IMAGE_TAG}/" values-$TARGET.yaml
+                    sed -i "/^[[:space:]]*tag:/ s/:.*/: $IMAGE_TAG/" values-$TARGET.yaml
                     cat $WORKSPACE/devops/values-$TARGET.yaml
                 '''
                 sshagent (credentials: ['github-key']) {
